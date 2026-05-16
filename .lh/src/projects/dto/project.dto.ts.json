@@ -1,0 +1,18 @@
+{
+    "sourceFile": "src/projects/dto/project.dto.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1778310270008,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1778310270008,
+            "name": "Commit-0",
+            "content": "import { IsNotEmpty, IsOptional, IsBoolean, IsNumber, IsIn } from 'class-validator';\r\n\r\nexport class CreateProjectDto {\r\n  @IsNotEmpty({ message: 'Project title is required' })\r\n  title: string;\r\n\r\n  @IsNotEmpty({ message: 'Description is required' })\r\n  description: string;\r\n\r\n  @IsOptional()\r\n  live_url?: string;\r\n\r\n  @IsOptional()\r\n  github_url?: string;\r\n\r\n  @IsOptional()\r\n  tech_stack?: string;\r\n\r\n  @IsOptional()\r\n  @IsIn(['web', 'mobile', 'api'])\r\n  category?: string;\r\n\r\n  @IsOptional()\r\n  is_featured?: boolean;\r\n\r\n  @IsOptional()\r\n  @IsNumber()\r\n  sort_order?: number;\r\n}\r\n\r\nexport class UpdateProjectDto {\r\n  @IsOptional()\r\n  title?: string;\r\n\r\n  @IsOptional()\r\n  description?: string;\r\n\r\n  @IsOptional()\r\n  live_url?: string;\r\n\r\n  @IsOptional()\r\n  github_url?: string;\r\n\r\n  @IsOptional()\r\n  tech_stack?: string;\r\n\r\n  @IsOptional()\r\n  @IsIn(['web', 'mobile', 'api'])\r\n  category?: string;\r\n\r\n  @IsOptional()\r\n  is_featured?: boolean;\r\n\r\n  @IsOptional()\r\n  @IsNumber()\r\n  sort_order?: number;\r\n}"
+        }
+    ]
+}

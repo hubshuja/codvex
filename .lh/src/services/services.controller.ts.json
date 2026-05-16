@@ -1,0 +1,18 @@
+{
+    "sourceFile": "src/services/services.controller.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1778310553487,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1778310553487,
+            "name": "Commit-0",
+            "content": "import {\r\n  Controller, Get, Post, Put, Delete,\r\n  Body, Param, ParseIntPipe, UseGuards\r\n} from '@nestjs/common';\r\nimport { ServicesService } from './services.service';\r\nimport { CreateServiceDto, UpdateServiceDto } from './dto/service.dto';\r\nimport { JwtAuthGuard } from '../auth/jwt-auth.guard';\r\n\r\n@Controller('api/services')\r\nexport class ServicesController {\r\n  constructor(private servicesService: ServicesService) {}\r\n\r\n  // ✅ Public routes\r\n  @Get()\r\n  findAll() {\r\n    return this.servicesService.findAll();\r\n  }\r\n\r\n  @Get(':id')\r\n  findOne(@Param('id', ParseIntPipe) id: number) {\r\n    return this.servicesService.findOne(id);\r\n  }\r\n\r\n  // 🔒 Admin only routes\r\n  @Get('admin/all')\r\n  @UseGuards(JwtAuthGuard)\r\n  findAllAdmin() {\r\n    return this.servicesService.findAllAdmin();\r\n  }\r\n\r\n  @Post()\r\n  @UseGuards(JwtAuthGuard)\r\n  create(@Body() dto: CreateServiceDto) {\r\n    return this.servicesService.create(dto);\r\n  }\r\n\r\n  @Put(':id')\r\n  @UseGuards(JwtAuthGuard)\r\n  update(\r\n    @Param('id', ParseIntPipe) id: number,\r\n    @Body() dto: UpdateServiceDto,\r\n  ) {\r\n    return this.servicesService.update(id, dto);\r\n  }\r\n\r\n  @Delete(':id')\r\n  @UseGuards(JwtAuthGuard)\r\n  remove(@Param('id', ParseIntPipe) id: number) {\r\n    return this.servicesService.remove(id);\r\n  }\r\n}"
+        }
+    ]
+}

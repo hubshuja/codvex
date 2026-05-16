@@ -1,0 +1,22 @@
+{
+    "sourceFile": "src/services/services.service.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 1,
+            "patches": [
+                {
+                    "date": 1778310534668,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1778311598347,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -40,9 +40,9 @@\n     const service = this.servicesRepository.create();\r\n     service.title       = dto.title;\r\n     service.description = dto.description;\r\n     service.icon        = dto.icon || 'fa-code';\r\n-    service.price_from  = dto.price_from || null;\r\n+    service.price_from  = dto.price_from || '';\r\n     service.sort_order  = dto.sort_order || 0;\r\n     service.is_active   = dto.is_active ?? true;\r\n \r\n     const saved = await this.servicesRepository.save(service);\r\n"
+                }
+            ],
+            "date": 1778310534668,
+            "name": "Commit-0",
+            "content": "import { Injectable, NotFoundException } from '@nestjs/common';\r\nimport { InjectRepository } from '@nestjs/typeorm';\r\nimport { Repository } from 'typeorm';\r\nimport { Service } from './service.entity';\r\nimport { CreateServiceDto, UpdateServiceDto } from './dto/service.dto';\r\n\r\n@Injectable()\r\nexport class ServicesService {\r\n  constructor(\r\n    @InjectRepository(Service)\r\n    private servicesRepository: Repository<Service>,\r\n  ) {}\r\n\r\n  // Public — get all active services\r\n  async findAll() {\r\n    const services = await this.servicesRepository.find({\r\n      where: { is_active: true },\r\n      order: { sort_order: 'ASC' },\r\n    });\r\n    return { success: true, data: services };\r\n  }\r\n\r\n  // Public — get single service\r\n  async findOne(id: number) {\r\n    const service = await this.servicesRepository.findOne({ where: { id } });\r\n    if (!service) throw new NotFoundException('Service not found');\r\n    return { success: true, data: service };\r\n  }\r\n\r\n  // Admin — get all including inactive\r\n  async findAllAdmin() {\r\n    const services = await this.servicesRepository.find({\r\n      order: { sort_order: 'ASC' },\r\n    });\r\n    return { success: true, data: services };\r\n  }\r\n\r\n  // Admin — create\r\n  async create(dto: CreateServiceDto) {\r\n    const service = this.servicesRepository.create();\r\n    service.title       = dto.title;\r\n    service.description = dto.description;\r\n    service.icon        = dto.icon || 'fa-code';\r\n    service.price_from  = dto.price_from || null;\r\n    service.sort_order  = dto.sort_order || 0;\r\n    service.is_active   = dto.is_active ?? true;\r\n\r\n    const saved = await this.servicesRepository.save(service);\r\n    return { success: true, message: 'Service created successfully', data: saved };\r\n  }\r\n\r\n  // Admin — update\r\n  async update(id: number, dto: UpdateServiceDto) {\r\n    const service = await this.servicesRepository.findOne({ where: { id } });\r\n    if (!service) throw new NotFoundException('Service not found');\r\n\r\n    Object.assign(service, dto);\r\n    const saved = await this.servicesRepository.save(service);\r\n    return { success: true, message: 'Service updated successfully', data: saved };\r\n  }\r\n\r\n  // Admin — delete\r\n  async remove(id: number) {\r\n    const service = await this.servicesRepository.findOne({ where: { id } });\r\n    if (!service) throw new NotFoundException('Service not found');\r\n\r\n    await this.servicesRepository.remove(service);\r\n    return { success: true, message: 'Service deleted successfully' };\r\n  }\r\n}"
+        }
+    ]
+}

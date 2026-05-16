@@ -1,0 +1,18 @@
+{
+    "sourceFile": "src/skills/skill.entity.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1778309916108,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1778309916108,
+            "name": "Commit-0",
+            "content": "import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';\r\n\r\n@Entity('skills')\r\nexport class Skill {\r\n  @PrimaryGeneratedColumn()\r\n  id: number;\r\n\r\n  @Column()\r\n  name: string;       // Laravel, Node.js, React\r\n\r\n  @Column()\r\n  percentage: number; // 0-100\r\n\r\n  @Column({ nullable: true })\r\n  icon: string;\r\n\r\n  @Column({ default: 'backend' })\r\n  category: string;   // backend, frontend, database, tools\r\n\r\n  @Column({ default: 0 })\r\n  sort_order: number;\r\n}"
+        }
+    ]
+}

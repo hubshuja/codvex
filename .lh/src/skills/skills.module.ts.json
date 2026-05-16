@@ -1,0 +1,18 @@
+{
+    "sourceFile": "src/skills/skills.module.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1778310730813,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1778310730813,
+            "name": "Commit-0",
+            "content": "import { Module } from '@nestjs/common';\r\nimport { TypeOrmModule } from '@nestjs/typeorm';\r\nimport { SkillsController } from './skills.controller';\r\nimport { SkillsService } from './skills.service';\r\nimport { Skill } from './skill.entity';\r\n\r\n@Module({\r\n  imports: [TypeOrmModule.forFeature([Skill])],\r\n  controllers: [SkillsController],\r\n  providers: [SkillsService],\r\n})\r\nexport class SkillsModule {}"
+        }
+    ]
+}

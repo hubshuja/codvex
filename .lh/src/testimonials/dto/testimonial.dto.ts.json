@@ -1,0 +1,18 @@
+{
+    "sourceFile": "src/testimonials/dto/testimonial.dto.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1778310767952,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1778310767952,
+            "name": "Commit-0",
+            "content": "import { IsNotEmpty, IsOptional, IsNumber, IsBoolean, Min, Max } from 'class-validator';\r\n\r\nexport class CreateTestimonialDto {\r\n  @IsNotEmpty({ message: 'Client name is required' })\r\n  client_name: string;\r\n\r\n  @IsOptional()\r\n  client_title?: string;\r\n\r\n  @IsOptional()\r\n  client_country?: string;\r\n\r\n  @IsNotEmpty({ message: 'Message is required' })\r\n  message: string;\r\n\r\n  @IsOptional()\r\n  @IsNumber()\r\n  @Min(1)\r\n  @Max(5)\r\n  rating?: number;\r\n\r\n  @IsOptional()\r\n  @IsBoolean()\r\n  is_featured?: boolean;\r\n}\r\n\r\nexport class UpdateTestimonialDto {\r\n  @IsOptional()\r\n  client_name?: string;\r\n\r\n  @IsOptional()\r\n  client_title?: string;\r\n\r\n  @IsOptional()\r\n  client_country?: string;\r\n\r\n  @IsOptional()\r\n  message?: string;\r\n\r\n  @IsOptional()\r\n  @IsNumber()\r\n  @Min(1)\r\n  @Max(5)\r\n  rating?: number;\r\n\r\n  @IsOptional()\r\n  @IsBoolean()\r\n  is_featured?: boolean;\r\n}"
+        }
+    ]
+}

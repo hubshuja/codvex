@@ -1,0 +1,18 @@
+{
+    "sourceFile": "src/services/service.dto.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1778310514991,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1778310514991,
+            "name": "Commit-0",
+            "content": "import { IsNotEmpty, IsOptional, IsBoolean, IsNumber } from 'class-validator';\r\n\r\nexport class CreateServiceDto {\r\n  @IsNotEmpty({ message: 'Service title is required' })\r\n  title: string;\r\n\r\n  @IsNotEmpty({ message: 'Description is required' })\r\n  description: string;\r\n\r\n  @IsOptional()\r\n  icon?: string;\r\n\r\n  @IsOptional()\r\n  price_from?: string;\r\n\r\n  @IsOptional()\r\n  @IsNumber()\r\n  sort_order?: number;\r\n\r\n  @IsOptional()\r\n  @IsBoolean()\r\n  is_active?: boolean;\r\n}\r\n\r\nexport class UpdateServiceDto {\r\n  @IsOptional()\r\n  title?: string;\r\n\r\n  @IsOptional()\r\n  description?: string;\r\n\r\n  @IsOptional()\r\n  icon?: string;\r\n\r\n  @IsOptional()\r\n  price_from?: string;\r\n\r\n  @IsOptional()\r\n  @IsNumber()\r\n  sort_order?: number;\r\n\r\n  @IsOptional()\r\n  @IsBoolean()\r\n  is_active?: boolean;\r\n}"
+        }
+    ]
+}

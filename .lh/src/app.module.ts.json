@@ -1,0 +1,18 @@
+{
+    "sourceFile": "src/app.module.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1778311087415,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1778311087415,
+            "name": "Commit-0",
+            "content": "import { Module } from '@nestjs/common';\r\nimport { ConfigModule, ConfigService } from '@nestjs/config';\r\nimport { TypeOrmModule } from '@nestjs/typeorm';\r\nimport { MailerModule } from '@nestjs-modules/mailer';\r\nimport { AuthModule } from './auth/auth.module';\r\nimport { ProjectsModule } from './projects/projects.module';\r\nimport { ServicesModule } from './services/services.module';\r\nimport { SkillsModule } from './skills/skills.module';\r\nimport { TestimonialsModule } from './testimonials/testimonials.module';\r\nimport { BlogModule } from './blog/blog.module';\r\nimport { ContactModule } from './contact/contact.module';\r\nimport { User } from './users/user.entity';\r\nimport { Project } from './projects/project.entity';\r\nimport { Service } from './services/service.entity';\r\nimport { Skill } from './skills/skill.entity';\r\nimport { Testimonial } from './testimonials/testimonial.entity';\r\nimport { Blog } from './blog/blog.entity';\r\nimport { Contact } from './contact/contact.entity';\r\n\r\n@Module({\r\n  imports: [\r\n    // Load .env globally\r\n    ConfigModule.forRoot({ isGlobal: true }),\r\n\r\n    // Database connection\r\n    TypeOrmModule.forRootAsync({\r\n      imports: [ConfigModule],\r\n      inject: [ConfigService],\r\n      useFactory: (config: ConfigService) => ({\r\n        type: 'mysql',\r\n        host:     config.get('DB_HOST'),\r\n        port:     config.get<number>('DB_PORT'),\r\n        username: config.get('DB_USER'),\r\n        password: config.get('DB_PASSWORD'),\r\n        database: config.get('DB_NAME'),\r\n        entities: [User, Project, Service, Skill, Testimonial, Blog, Contact],\r\n        synchronize: true,\r\n      }),\r\n    }),\r\n\r\n    // Mailer configuration\r\n    MailerModule.forRootAsync({\r\n      imports: [ConfigModule],\r\n      inject: [ConfigService],\r\n      useFactory: (config: ConfigService) => ({\r\n        transport: {\r\n          host: config.get('MAIL_HOST'),\r\n          port: config.get<number>('MAIL_PORT'),\r\n          secure: false,\r\n          auth: {\r\n            user: config.get('MAIL_USER'),\r\n            pass: config.get('MAIL_PASS'),\r\n          },\r\n        },\r\n        defaults: {\r\n          from: `\"Codvex\" <${config.get('MAIL_FROM')}>`,\r\n        },\r\n      }),\r\n    }),\r\n\r\n    AuthModule,\r\n    ProjectsModule,\r\n    ServicesModule,\r\n    SkillsModule,\r\n    TestimonialsModule,\r\n    BlogModule,\r\n    ContactModule,\r\n  ],\r\n})\r\nexport class AppModule {}"
+        }
+    ]
+}

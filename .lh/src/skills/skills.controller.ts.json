@@ -1,0 +1,18 @@
+{
+    "sourceFile": "src/skills/skills.controller.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1778310705069,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1778310705069,
+            "name": "Commit-0",
+            "content": "import {\r\n  Controller, Get, Post, Put, Delete,\r\n  Body, Param, Query, ParseIntPipe, UseGuards\r\n} from '@nestjs/common';\r\nimport { SkillsService } from './skills.service';\r\nimport { CreateSkillDto, UpdateSkillDto } from './dto/skill.dto';\r\nimport { JwtAuthGuard } from '../auth/jwt-auth.guard';\r\n\r\n@Controller('api/skills')\r\nexport class SkillsController {\r\n  constructor(private skillsService: SkillsService) {}\r\n\r\n  // ✅ Public routes\r\n  @Get()\r\n  findAll() {\r\n    return this.skillsService.findAll();\r\n  }\r\n\r\n  @Get('category/:category')\r\n  findByCategory(@Param('category') category: string) {\r\n    return this.skillsService.findByCategory(category);\r\n  }\r\n\r\n  // 🔒 Admin only routes\r\n  @Post()\r\n  @UseGuards(JwtAuthGuard)\r\n  create(@Body() dto: CreateSkillDto) {\r\n    return this.skillsService.create(dto);\r\n  }\r\n\r\n  @Put(':id')\r\n  @UseGuards(JwtAuthGuard)\r\n  update(\r\n    @Param('id', ParseIntPipe) id: number,\r\n    @Body() dto: UpdateSkillDto,\r\n  ) {\r\n    return this.skillsService.update(id, dto);\r\n  }\r\n\r\n  @Delete(':id')\r\n  @UseGuards(JwtAuthGuard)\r\n  remove(@Param('id', ParseIntPipe) id: number) {\r\n    return this.skillsService.remove(id);\r\n  }\r\n}"
+        }
+    ]
+}

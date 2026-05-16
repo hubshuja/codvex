@@ -1,0 +1,18 @@
+{
+    "sourceFile": "src/auth/jwt-auth.guard.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1778310125843,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1778310125843,
+            "name": "Commit-0",
+            "content": "import { Injectable } from '@nestjs/common';\r\nimport { AuthGuard } from '@nestjs/passport';\r\n\r\n@Injectable()\r\nexport class JwtAuthGuard extends AuthGuard('jwt') {}"
+        }
+    ]
+}

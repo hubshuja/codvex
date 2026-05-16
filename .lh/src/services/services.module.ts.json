@@ -1,0 +1,18 @@
+{
+    "sourceFile": "src/services/services.module.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1778310572984,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1778310572984,
+            "name": "Commit-0",
+            "content": "import { Module } from '@nestjs/common';\r\nimport { TypeOrmModule } from '@nestjs/typeorm';\r\nimport { ServicesController } from './services.controller';\r\nimport { ServicesService } from './services.service';\r\nimport { Service } from './service.entity';\r\n\r\n@Module({\r\n  imports: [TypeOrmModule.forFeature([Service])],\r\n  controllers: [ServicesController],\r\n  providers: [ServicesService],\r\n})\r\nexport class ServicesModule {}"
+        }
+    ]
+}

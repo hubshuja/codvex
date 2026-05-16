@@ -1,0 +1,18 @@
+{
+    "sourceFile": "src/blog/blog.module.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1778310949478,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1778310949478,
+            "name": "Commit-0",
+            "content": "import { Module } from '@nestjs/common';\r\nimport { TypeOrmModule } from '@nestjs/typeorm';\r\nimport { BlogController } from './blog.controller';\r\nimport { BlogService } from './blog.service';\r\nimport { Blog } from './blog.entity';\r\n\r\n@Module({\r\n  imports: [TypeOrmModule.forFeature([Blog])],\r\n  controllers: [BlogController],\r\n  providers: [BlogService],\r\n})\r\nexport class BlogModule {}"
+        }
+    ]
+}

@@ -1,0 +1,18 @@
+{
+    "sourceFile": "src/blog/dto/blog.dto.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1778310872719,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1778310872719,
+            "name": "Commit-0",
+            "content": "import { IsNotEmpty, IsOptional, IsIn } from 'class-validator';\r\n\r\nexport class CreateBlogDto {\r\n  @IsNotEmpty({ message: 'Title is required' })\r\n  title: string;\r\n\r\n  @IsNotEmpty({ message: 'Content is required' })\r\n  content: string;\r\n\r\n  @IsOptional()\r\n  excerpt?: string;\r\n\r\n  @IsOptional()\r\n  category?: string;\r\n\r\n  @IsOptional()\r\n  tags?: string;\r\n\r\n  @IsOptional()\r\n  @IsIn(['draft', 'published'])\r\n  status?: string;\r\n}\r\n\r\nexport class UpdateBlogDto {\r\n  @IsOptional()\r\n  title?: string;\r\n\r\n  @IsOptional()\r\n  content?: string;\r\n\r\n  @IsOptional()\r\n  excerpt?: string;\r\n\r\n  @IsOptional()\r\n  category?: string;\r\n\r\n  @IsOptional()\r\n  tags?: string;\r\n\r\n  @IsOptional()\r\n  @IsIn(['draft', 'published'])\r\n  status?: string;\r\n}"
+        }
+    ]
+}

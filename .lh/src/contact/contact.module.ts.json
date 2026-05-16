@@ -1,0 +1,18 @@
+{
+    "sourceFile": "src/contact/contact.module.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1778311055216,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1778311055216,
+            "name": "Commit-0",
+            "content": "import { Module } from '@nestjs/common';\r\nimport { TypeOrmModule } from '@nestjs/typeorm';\r\nimport { ContactController } from './contact.controller';\r\nimport { ContactService } from './contact.service';\r\nimport { Contact } from './contact.entity';\r\n\r\n@Module({\r\n  imports: [TypeOrmModule.forFeature([Contact])],\r\n  controllers: [ContactController],\r\n  providers: [ContactService],\r\n})\r\nexport class ContactModule {}"
+        }
+    ]
+}

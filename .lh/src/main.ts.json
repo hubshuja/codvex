@@ -1,0 +1,18 @@
+{
+    "sourceFile": "src/main.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1778311098583,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1778311098583,
+            "name": "Commit-0",
+            "content": "import { NestFactory } from '@nestjs/core';\r\nimport { AppModule } from './app.module';\r\nimport { ValidationPipe } from '@nestjs/common';\r\nimport { join } from 'path';\r\nimport { NestExpressApplication } from '@nestjs/platform-express';\r\nimport * as express from 'express';\r\n\r\nasync function bootstrap() {\r\n  const app = await NestFactory.create<NestExpressApplication>(AppModule);\r\n\r\n  // CORS\r\n  app.enableCors({\r\n    origin: '*',\r\n    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',\r\n    allowedHeaders: 'Content-Type, Authorization',\r\n  });\r\n\r\n  // Global validation\r\n  app.useGlobalPipes(new ValidationPipe({\r\n    whitelist: true,\r\n    transform: true,\r\n    forbidNonWhitelisted: false,\r\n  }));\r\n\r\n  // Serve uploaded files\r\n  app.use('/uploads', express.static(join(__dirname, '..', 'uploads')));\r\n\r\n  await app.listen(process.env.PORT ?? 4000);\r\n  console.log(`🚀 Codvex API running on: http://localhost:${process.env.PORT ?? 4000}`);\r\n}\r\nbootstrap();"
+        }
+    ]
+}

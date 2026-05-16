@@ -1,0 +1,18 @@
+{
+    "sourceFile": "src/auth/dto/auth.dto.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1778310093424,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1778310093424,
+            "name": "Commit-0",
+            "content": "import { IsEmail, IsNotEmpty, MinLength } from 'class-validator';\r\n\r\nexport class RegisterDto {\r\n  @IsNotEmpty({ message: 'Name is required' })\r\n  name: string;\r\n\r\n  @IsEmail({}, { message: 'Valid email required' })\r\n  email: string;\r\n\r\n  @IsNotEmpty()\r\n  @MinLength(6, { message: 'Password must be at least 6 characters' })\r\n  password: string;\r\n}\r\n\r\nexport class LoginDto {\r\n  @IsEmail({}, { message: 'Valid email required' })\r\n  email: string;\r\n\r\n  @IsNotEmpty({ message: 'Password is required' })\r\n  password: string;\r\n}"
+        }
+    ]
+}

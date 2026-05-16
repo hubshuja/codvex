@@ -1,0 +1,18 @@
+{
+    "sourceFile": "src/skills/dto/skill.dto.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1778310663981,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1778310663981,
+            "name": "Commit-0",
+            "content": "import { IsNotEmpty, IsOptional, IsNumber, IsIn, Min, Max } from 'class-validator';\r\n\r\nexport class CreateSkillDto {\r\n  @IsNotEmpty({ message: 'Skill name is required' })\r\n  name: string;\r\n\r\n  @IsNumber()\r\n  @Min(0)\r\n  @Max(100)\r\n  percentage: number;\r\n\r\n  @IsOptional()\r\n  icon?: string;\r\n\r\n  @IsOptional()\r\n  @IsIn(['backend', 'frontend', 'database', 'tools'])\r\n  category?: string;\r\n\r\n  @IsOptional()\r\n  @IsNumber()\r\n  sort_order?: number;\r\n}\r\n\r\nexport class UpdateSkillDto {\r\n  @IsOptional()\r\n  name?: string;\r\n\r\n  @IsOptional()\r\n  @IsNumber()\r\n  @Min(0)\r\n  @Max(100)\r\n  percentage?: number;\r\n\r\n  @IsOptional()\r\n  icon?: string;\r\n\r\n  @IsOptional()\r\n  @IsIn(['backend', 'frontend', 'database', 'tools'])\r\n  category?: string;\r\n\r\n  @IsOptional()\r\n  @IsNumber()\r\n  sort_order?: number;\r\n}"
+        }
+    ]
+}

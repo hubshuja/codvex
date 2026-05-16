@@ -1,0 +1,22 @@
+{
+    "sourceFile": "src/skills/skills.service.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 1,
+            "patches": [
+                {
+                    "date": 1778310681457,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1778311603515,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -42,9 +42,9 @@\n   async create(dto: CreateSkillDto) {\r\n     const skill = this.skillsRepository.create();\r\n     skill.name       = dto.name;\r\n     skill.percentage = dto.percentage;\r\n-    skill.icon       = dto.icon || null;\r\n+    skill.icon       = dto.icon || '';\r\n     skill.category   = dto.category || 'backend';\r\n     skill.sort_order = dto.sort_order || 0;\r\n \r\n     const saved = await this.skillsRepository.save(skill);\r\n"
+                }
+            ],
+            "date": 1778310681457,
+            "name": "Commit-0",
+            "content": "import { Injectable, NotFoundException } from '@nestjs/common';\r\nimport { InjectRepository } from '@nestjs/typeorm';\r\nimport { Repository } from 'typeorm';\r\nimport { Skill } from './skill.entity';\r\nimport { CreateSkillDto, UpdateSkillDto } from './dto/skill.dto';\r\n\r\n@Injectable()\r\nexport class SkillsService {\r\n  constructor(\r\n    @InjectRepository(Skill)\r\n    private skillsRepository: Repository<Skill>,\r\n  ) {}\r\n\r\n  // Public — get all skills grouped by category\r\n  async findAll() {\r\n    const skills = await this.skillsRepository.find({\r\n      order: { category: 'ASC', sort_order: 'ASC' },\r\n    });\r\n\r\n    // Group by category\r\n    const grouped = skills.reduce((acc, skill) => {\r\n      if (!acc[skill.category]) {\r\n        acc[skill.category] = [];\r\n      }\r\n      acc[skill.category].push(skill);\r\n      return acc;\r\n    }, {});\r\n\r\n    return { success: true, data: skills, grouped };\r\n  }\r\n\r\n  // Public — get by category\r\n  async findByCategory(category: string) {\r\n    const skills = await this.skillsRepository.find({\r\n      where: { category },\r\n      order: { sort_order: 'ASC' },\r\n    });\r\n    return { success: true, data: skills };\r\n  }\r\n\r\n  // Admin — create\r\n  async create(dto: CreateSkillDto) {\r\n    const skill = this.skillsRepository.create();\r\n    skill.name       = dto.name;\r\n    skill.percentage = dto.percentage;\r\n    skill.icon       = dto.icon || null;\r\n    skill.category   = dto.category || 'backend';\r\n    skill.sort_order = dto.sort_order || 0;\r\n\r\n    const saved = await this.skillsRepository.save(skill);\r\n    return { success: true, message: 'Skill created successfully', data: saved };\r\n  }\r\n\r\n  // Admin — update\r\n  async update(id: number, dto: UpdateSkillDto) {\r\n    const skill = await this.skillsRepository.findOne({ where: { id } });\r\n    if (!skill) throw new NotFoundException('Skill not found');\r\n\r\n    Object.assign(skill, dto);\r\n    const saved = await this.skillsRepository.save(skill);\r\n    return { success: true, message: 'Skill updated successfully', data: saved };\r\n  }\r\n\r\n  // Admin — delete\r\n  async remove(id: number) {\r\n    const skill = await this.skillsRepository.findOne({ where: { id } });\r\n    if (!skill) throw new NotFoundException('Skill not found');\r\n\r\n    await this.skillsRepository.remove(skill);\r\n    return { success: true, message: 'Skill deleted successfully' };\r\n  }\r\n}"
+        }
+    ]
+}

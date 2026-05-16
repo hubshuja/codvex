@@ -1,0 +1,22 @@
+{
+    "sourceFile": "src/contact/dto/contact.dto.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 1,
+            "patches": [
+                {
+                    "date": 1778310970408,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1778310979460,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,1 +1,18 @@\n-contact.dto.ts\n\\ No newline at end of file\n+import { IsNotEmpty, IsEmail, IsOptional } from 'class-validator';\r\n+\r\n+export class CreateContactDto {\r\n+  @IsNotEmpty({ message: 'Name is required' })\r\n+  name: string;\r\n+\r\n+  @IsEmail({}, { message: 'Valid email is required' })\r\n+  email: string;\r\n+\r\n+  @IsOptional()\r\n+  phone?: string;\r\n+\r\n+  @IsOptional()\r\n+  subject?: string;\r\n+\r\n+  @IsNotEmpty({ message: 'Message is required' })\r\n+  message: string;\r\n+}\n\\ No newline at end of file\n"
+                }
+            ],
+            "date": 1778310970408,
+            "name": "Commit-0",
+            "content": "contact.dto.ts"
+        }
+    ]
+}

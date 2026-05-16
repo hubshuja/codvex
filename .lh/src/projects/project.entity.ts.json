@@ -1,0 +1,18 @@
+{
+    "sourceFile": "src/projects/project.entity.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1778309865676,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1778309865676,
+            "name": "Commit-0",
+            "content": "import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';\r\n\r\n@Entity('projects')\r\nexport class Project {\r\n  @PrimaryGeneratedColumn()\r\n  id: number;\r\n\r\n  @Column()\r\n  title: string;\r\n\r\n  @Column({ type: 'text' })\r\n  description: string;\r\n\r\n  @Column({ nullable: true })\r\n  image: string;\r\n\r\n  @Column({ nullable: true })\r\n  live_url: string;\r\n\r\n  @Column({ nullable: true })\r\n  github_url: string;\r\n\r\n  @Column({ nullable: true })\r\n  tech_stack: string;   // comma separated: Laravel,Node.js,MySQL\r\n\r\n  @Column({ default: 'web' })\r\n  category: string;    // web, mobile, api\r\n\r\n  @Column({ default: true })\r\n  is_featured: boolean;\r\n\r\n  @Column({ default: 0 })\r\n  sort_order: number;\r\n\r\n  @CreateDateColumn()\r\n  created_at: Date;\r\n}"
+        }
+    ]
+}

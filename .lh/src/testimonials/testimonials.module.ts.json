@@ -1,0 +1,22 @@
+{
+    "sourceFile": "src/testimonials/testimonials.module.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 1,
+            "patches": [
+                {
+                    "date": 1778310828785,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1778310835748,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,12 @@\n+import { Module } from '@nestjs/common';\r\n+import { TypeOrmModule } from '@nestjs/typeorm';\r\n+import { TestimonialsController } from './testimonials.controller';\r\n+import { TestimonialsService } from './testimonials.service';\r\n+import { Testimonial } from './testimonial.entity';\r\n+\r\n+@Module({\r\n+  imports: [TypeOrmModule.forFeature([Testimonial])],\r\n+  controllers: [TestimonialsController],\r\n+  providers: [TestimonialsService],\r\n+})\r\n+export class TestimonialsModule {}\n\\ No newline at end of file\n"
+                }
+            ],
+            "date": 1778310828785,
+            "name": "Commit-0",
+            "content": "testimonials.module.ts"
+        }
+    ]
+}

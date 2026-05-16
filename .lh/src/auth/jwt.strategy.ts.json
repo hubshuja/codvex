@@ -1,0 +1,22 @@
+{
+    "sourceFile": "src/auth/jwt.strategy.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 1,
+            "patches": [
+                {
+                    "date": 1778310150391,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1778310157173,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,18 @@\n+import { Injectable } from '@nestjs/common';\r\n+import { PassportStrategy } from '@nestjs/passport';\r\n+import { ExtractJwt, Strategy } from 'passport-jwt';\r\n+import { ConfigService } from '@nestjs/config';\r\n+\r\n+@Injectable()\r\n+export class JwtStrategy extends PassportStrategy(Strategy) {\r\n+  constructor(config: ConfigService) {\r\n+    super({\r\n+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),\r\n+      secretOrKey: config.get<string>('JWT_SECRET') as string,\r\n+    });\r\n+  }\r\n+\r\n+  async validate(payload: any) {\r\n+    return { id: payload.id, email: payload.email };\r\n+  }\r\n+}\n\\ No newline at end of file\n"
+                }
+            ],
+            "date": 1778310150391,
+            "name": "Commit-0",
+            "content": "jwt.strategy.ts"
+        }
+    ]
+}

@@ -1,0 +1,18 @@
+{
+    "sourceFile": "src/contact/contact.controller.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1778311033154,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1778311033154,
+            "name": "Commit-0",
+            "content": "import {\r\n  Controller, Get, Post, Delete, Patch,\r\n  Body, Param, Query, ParseIntPipe, UseGuards\r\n} from '@nestjs/common';\r\nimport { ContactService } from './contact.service';\r\nimport { CreateContactDto } from './dto/contact.dto';\r\nimport { JwtAuthGuard } from '../auth/jwt-auth.guard';\r\n\r\n@Controller('api/contact')\r\nexport class ContactController {\r\n  constructor(private contactService: ContactService) {}\r\n\r\n  // ✅ Public — submit contact form\r\n  @Post()\r\n  create(@Body() dto: CreateContactDto) {\r\n    return this.contactService.create(dto);\r\n  }\r\n\r\n  // 🔒 Admin only routes\r\n  @Get()\r\n  @UseGuards(JwtAuthGuard)\r\n  findAll(\r\n    @Query('page')    page    = '1',\r\n    @Query('perPage') perPage = '10',\r\n    @Query('status')  status  = '',\r\n  ) {\r\n    return this.contactService.findAll(+page, +perPage, status);\r\n  }\r\n\r\n  @Patch(':id/read')\r\n  @UseGuards(JwtAuthGuard)\r\n  markAsRead(@Param('id', ParseIntPipe) id: number) {\r\n    return this.contactService.markAsRead(id);\r\n  }\r\n\r\n  @Delete(':id')\r\n  @UseGuards(JwtAuthGuard)\r\n  remove(@Param('id', ParseIntPipe) id: number) {\r\n    return this.contactService.remove(id);\r\n  }\r\n}"
+        }
+    ]
+}

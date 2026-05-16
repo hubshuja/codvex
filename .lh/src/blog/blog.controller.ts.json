@@ -1,0 +1,18 @@
+{
+    "sourceFile": "src/blog/blog.controller.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1778310929365,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1778310929365,
+            "name": "Commit-0",
+            "content": "import {\r\n  Controller, Get, Post, Put, Delete,\r\n  Body, Param, Query, ParseIntPipe,\r\n  UseGuards, UseInterceptors, UploadedFile\r\n} from '@nestjs/common';\r\nimport { FileInterceptor } from '@nestjs/platform-express';\r\nimport { diskStorage } from 'multer';\r\nimport { extname } from 'path';\r\nimport { v4 as uuidv4 } from 'uuid';\r\nimport { BlogService } from './blog.service';\r\nimport { CreateBlogDto, UpdateBlogDto } from './dto/blog.dto';\r\nimport { JwtAuthGuard } from '../auth/jwt-auth.guard';\r\n\r\nconst blogImageStorage = diskStorage({\r\n  destination: './uploads/blog',\r\n  filename: (req, file, cb) => {\r\n    cb(null, uuidv4() + extname(file.originalname));\r\n  }\r\n});\r\n\r\n@Controller('api/blog')\r\nexport class BlogController {\r\n  constructor(private blogService: BlogService) {}\r\n\r\n  // ✅ Public routes\r\n  @Get()\r\n  findAll(\r\n    @Query('page')     page     = '1',\r\n    @Query('perPage')  perPage  = '6',\r\n    @Query('category') category = '',\r\n  ) {\r\n    return this.blogService.findAll(+page, +perPage, category);\r\n  }\r\n\r\n  @Get('recent')\r\n  findRecent(@Query('limit') limit = '3') {\r\n    return this.blogService.findRecent(+limit);\r\n  }\r\n\r\n  @Get('categories')\r\n  getCategories() {\r\n    return this.blogService.getCategories();\r\n  }\r\n\r\n  @Get(':slug')\r\n  findBySlug(@Param('slug') slug: string) {\r\n    return this.blogService.findBySlug(slug);\r\n  }\r\n\r\n  // 🔒 Admin only routes\r\n  @Get('admin/all')\r\n  @UseGuards(JwtAuthGuard)\r\n  findAllAdmin(\r\n    @Query('page')    page    = '1',\r\n    @Query('perPage') perPage = '10',\r\n  ) {\r\n    return this.blogService.findAllAdmin(+page, +perPage);\r\n  }\r\n\r\n  @Post()\r\n  @UseGuards(JwtAuthGuard)\r\n  @UseInterceptors(FileInterceptor('image', {\r\n    storage: blogImageStorage,\r\n    limits: { fileSize: 5 * 1024 * 1024 },\r\n  }))\r\n  create(\r\n    @Body() dto: CreateBlogDto,\r\n    @UploadedFile() file?: Express.Multer.File\r\n  ) {\r\n    return this.blogService.create(dto, file?.filename);\r\n  }\r\n\r\n  @Put(':id')\r\n  @UseGuards(JwtAuthGuard)\r\n  @UseInterceptors(FileInterceptor('image', {\r\n    storage: blogImageStorage,\r\n    limits: { fileSize: 5 * 1024 * 1024 },\r\n  }))\r\n  update(\r\n    @Param('id', ParseIntPipe) id: number,\r\n    @Body() dto: UpdateBlogDto,\r\n    @UploadedFile() file?: Express.Multer.File\r\n  ) {\r\n    return this.blogService.update(id, dto, file?.filename);\r\n  }\r\n\r\n  @Delete(':id')\r\n  @UseGuards(JwtAuthGuard)\r\n  remove(@Param('id', ParseIntPipe) id: number) {\r\n    return this.blogService.remove(id);\r\n  }\r\n}"
+        }
+    ]
+}

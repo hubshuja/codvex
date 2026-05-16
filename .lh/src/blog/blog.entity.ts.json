@@ -1,0 +1,18 @@
+{
+    "sourceFile": "src/blog/blog.entity.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1778309977166,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1778309977166,
+            "name": "Commit-0",
+            "content": "import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';\r\n\r\n@Entity('blogs')\r\nexport class Blog {\r\n  @PrimaryGeneratedColumn()\r\n  id: number;\r\n\r\n  @Column()\r\n  title: string;\r\n\r\n  @Column({ unique: true })\r\n  slug: string;\r\n\r\n  @Column({ type: 'text' })\r\n  content: string;\r\n\r\n  @Column({ nullable: true })\r\n  excerpt: string;    // short summary\r\n\r\n  @Column({ nullable: true })\r\n  image: string;\r\n\r\n  @Column({ nullable: true })\r\n  category: string;   // Laravel, Node.js, Career\r\n\r\n  @Column({ nullable: true })\r\n  tags: string;       // comma separated\r\n\r\n  @Column({ default: 'published' })\r\n  status: string;     // draft, published\r\n\r\n  @Column({ default: 0 })\r\n  views: number;\r\n\r\n  @CreateDateColumn()\r\n  created_at: Date;\r\n\r\n  @UpdateDateColumn()\r\n  updated_at: Date;\r\n}"
+        }
+    ]
+}

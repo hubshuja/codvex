@@ -1,0 +1,18 @@
+{
+    "sourceFile": "src/testimonials/testimonials.controller.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1778310810091,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1778310810091,
+            "name": "Commit-0",
+            "content": "import {\r\n  Controller, Get, Post, Put, Delete,\r\n  Body, Param, Query, ParseIntPipe,\r\n  UseGuards, UseInterceptors, UploadedFile\r\n} from '@nestjs/common';\r\nimport { FileInterceptor } from '@nestjs/platform-express';\r\nimport { diskStorage } from 'multer';\r\nimport { extname } from 'path';\r\nimport { v4 as uuidv4 } from 'uuid';\r\nimport { TestimonialsService } from './testimonials.service';\r\nimport { CreateTestimonialDto, UpdateTestimonialDto } from './dto/testimonial.dto';\r\nimport { JwtAuthGuard } from '../auth/jwt-auth.guard';\r\n\r\nconst avatarStorage = diskStorage({\r\n  destination: './uploads/avatars',\r\n  filename: (req, file, cb) => {\r\n    cb(null, uuidv4() + extname(file.originalname));\r\n  }\r\n});\r\n\r\n@Controller('api/testimonials')\r\nexport class TestimonialsController {\r\n  constructor(private testimonialsService: TestimonialsService) {}\r\n\r\n  // ✅ Public routes\r\n  @Get('featured')\r\n  findFeatured() {\r\n    return this.testimonialsService.findFeatured();\r\n  }\r\n\r\n  @Get()\r\n  findAll(\r\n    @Query('page')    page    = '1',\r\n    @Query('perPage') perPage = '6',\r\n  ) {\r\n    return this.testimonialsService.findAll(+page, +perPage);\r\n  }\r\n\r\n  // 🔒 Admin only routes\r\n  @Post()\r\n  @UseGuards(JwtAuthGuard)\r\n  @UseInterceptors(FileInterceptor('client_avatar', {\r\n    storage: avatarStorage,\r\n    limits: { fileSize: 2 * 1024 * 1024 },\r\n  }))\r\n  create(\r\n    @Body() dto: CreateTestimonialDto,\r\n    @UploadedFile() file?: Express.Multer.File\r\n  ) {\r\n    return this.testimonialsService.create(dto, file?.filename);\r\n  }\r\n\r\n  @Put(':id')\r\n  @UseGuards(JwtAuthGuard)\r\n  @UseInterceptors(FileInterceptor('client_avatar', {\r\n    storage: avatarStorage,\r\n    limits: { fileSize: 2 * 1024 * 1024 },\r\n  }))\r\n  update(\r\n    @Param('id', ParseIntPipe) id: number,\r\n    @Body() dto: UpdateTestimonialDto,\r\n    @UploadedFile() file?: Express.Multer.File\r\n  ) {\r\n    return this.testimonialsService.update(id, dto, file?.filename);\r\n  }\r\n\r\n  @Delete(':id')\r\n  @UseGuards(JwtAuthGuard)\r\n  remove(@Param('id', ParseIntPipe) id: number) {\r\n    return this.testimonialsService.remove(id);\r\n  }\r\n}"
+        }
+    ]
+}

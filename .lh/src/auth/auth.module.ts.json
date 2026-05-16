@@ -1,0 +1,18 @@
+{
+    "sourceFile": "src/auth/auth.module.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1778310217202,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1778310217202,
+            "name": "Commit-0",
+            "content": "import { Module } from '@nestjs/common';\r\nimport { JwtModule } from '@nestjs/jwt';\r\nimport { PassportModule } from '@nestjs/passport';\r\nimport { TypeOrmModule } from '@nestjs/typeorm';\r\nimport { ConfigModule, ConfigService } from '@nestjs/config';\r\nimport { AuthController } from './auth.controller';\r\nimport { AuthService } from './auth.service';\r\nimport { JwtStrategy } from './jwt.strategy';\r\nimport { JwtAuthGuard } from './jwt-auth.guard';\r\nimport { User } from '../users/user.entity';\r\n\r\n@Module({\r\n  imports: [\r\n    TypeOrmModule.forFeature([User]),\r\n    PassportModule,\r\n    JwtModule.registerAsync({\r\n      imports: [ConfigModule],\r\n      inject: [ConfigService],\r\n      useFactory: (config: ConfigService) => ({\r\n        secret: config.get<string>('JWT_SECRET'),\r\n        signOptions: { expiresIn: config.get('JWT_EXPIRES_IN') },\r\n      }),\r\n    }),\r\n  ],\r\n  controllers: [AuthController],\r\n  providers: [AuthService, JwtStrategy, JwtAuthGuard],\r\n  exports: [JwtAuthGuard],\r\n})\r\nexport class AuthModule {}"
+        }
+    ]
+}
