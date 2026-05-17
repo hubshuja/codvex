@@ -4,11 +4,18 @@ export class CreateTestimonialDto {
   @IsNotEmpty({ message: 'Client name is required' })
   client_name: string;
 
+   @IsNotEmpty({ message: 'Job Title is required' })
+  job_title: string;
+
+  
   @IsOptional()
   client_title?: string;
 
   @IsOptional()
   client_country?: string;
+
+  @IsOptional()
+  screen_shot?: string;
 
   @IsNotEmpty({ message: 'Message is required' })
   message: string;

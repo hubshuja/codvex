@@ -20,6 +20,12 @@ export class Testimonial {
   @Column({ type: 'text' })
   message: string;
 
+  @Column({ type: 'text' })
+  job_title: string;
+
+   @Column({ type: 'text' })
+  screen_shot: string;
+
   @Column({ default: 5 })
   rating: number;         // 1-5
 

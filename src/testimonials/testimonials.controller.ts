@@ -3,13 +3,14 @@ import {
   Body, Param, Query, ParseIntPipe,
   UseGuards, UseInterceptors, UploadedFile
 } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { v4 as uuidv4 } from 'uuid';
 import { TestimonialsService } from './testimonials.service';
 import { CreateTestimonialDto, UpdateTestimonialDto } from './dto/testimonial.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { UploadedFiles } from '@nestjs/common';
 
 const avatarStorage = diskStorage({
   destination: './uploads/avatars',
@@ -33,36 +34,53 @@ export class TestimonialsController {
     @Query('page')    page    = '1',
     @Query('perPage') perPage = '6',
   ) {
+    console.log('testimonial listing - page:', page, 'perPage:', perPage);
     return this.testimonialsService.findAll(+page, +perPage);
   }
 
   // 🔒 Admin only routes
   @Post()
-  @UseGuards(JwtAuthGuard)
-  @UseInterceptors(FileInterceptor('client_avatar', {
-    storage: avatarStorage,
-    limits: { fileSize: 2 * 1024 * 1024 },
-  }))
-  create(
-    @Body() dto: CreateTestimonialDto,
-    @UploadedFile() file?: Express.Multer.File
-  ) {
-    return this.testimonialsService.create(dto, file?.filename);
+@UseGuards(JwtAuthGuard)
+@UseInterceptors(FileFieldsInterceptor([
+  { name: 'client_avatar', maxCount: 1 },
+  { name: 'screen_shot', maxCount: 1 },
+], {
+  storage: avatarStorage,
+  limits: { fileSize: 2 * 1024 * 1024 },
+}))
+create(
+  @Body() dto: CreateTestimonialDto,
+  @UploadedFiles() files: {
+    client_avatar?: Express.Multer.File[],
+    screen_shot?: Express.Multer.File[],
   }
+) {
+  const avatar = files?.client_avatar?.[0]?.filename;
+  const screenshot = files?.screen_shot?.[0]?.filename;
+  return this.testimonialsService.create(dto, avatar, screenshot);
+}
 
   @Put(':id')
   @UseGuards(JwtAuthGuard)
-  @UseInterceptors(FileInterceptor('client_avatar', {
+  @UseInterceptors(FileFieldsInterceptor([
+    { name: 'client_avatar', maxCount: 1 },
+    { name: 'screen_shot', maxCount: 1 },
+  ], {
     storage: avatarStorage,
     limits: { fileSize: 2 * 1024 * 1024 },
   }))
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body() dto: UpdateTestimonialDto,
-    @UploadedFile() file?: Express.Multer.File
-  ) {
-    return this.testimonialsService.update(id, dto, file?.filename);
+    @UploadedFiles() files: {
+    client_avatar?: Express.Multer.File[],
+    screen_shot?: Express.Multer.File[],
   }
+) {
+  const avatar = files?.client_avatar?.[0]?.filename;
+  const screenshot = files?.screen_shot?.[0]?.filename;
+  return this.testimonialsService.update(id, dto, avatar, screenshot);
+}
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)

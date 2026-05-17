@@ -1,4 +1,6 @@
 import { Module } from '@nestjs/common';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MailerModule } from '@nestjs-modules/mailer';
@@ -34,6 +36,10 @@ import { Contact } from './contact/contact.entity';
         entities: [User, Project, Service, Skill, Testimonial, Blog, Contact],
         synchronize: true,
       }),
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'client/build'),
+      exclude: ['/api/(.*)'],
     }),
     MailerModule.forRootAsync({
       imports: [ConfigModule],

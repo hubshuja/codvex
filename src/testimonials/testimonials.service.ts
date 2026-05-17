@@ -46,13 +46,17 @@ export class TestimonialsService {
   }
 
   // Admin — create
-  async create(dto: CreateTestimonialDto, avatarFilename?: string) {
+  async create(dto: CreateTestimonialDto, avatarFilename?: string, screenshotFilename?: string) {
     const testimonial        = this.testimonialsRepository.create();
     testimonial.client_name    = dto.client_name;
     testimonial.client_title   = dto.client_title || '';
     testimonial.client_country = dto.client_country || '';
     testimonial.message        = dto.message;
     testimonial.rating         = dto.rating || 5;
+    testimonial.job_title      = dto.job_title;
+    testimonial.screen_shot    = screenshotFilename
+      ? `uploads/screenshots/${screenshotFilename}`
+      : '';
     testimonial.is_featured    = dto.is_featured ?? false;
     testimonial.client_avatar  = avatarFilename
       ? `uploads/avatars/${avatarFilename}`
@@ -63,7 +67,7 @@ export class TestimonialsService {
   }
 
   // Admin — update
-  async update(id: number, dto: UpdateTestimonialDto, avatarFilename?: string) {
+  async update(id: number, dto: UpdateTestimonialDto, avatarFilename?: string, screenshotFilename?: string) {
     const testimonial = await this.testimonialsRepository.findOne({ where: { id } });
     if (!testimonial) throw new NotFoundException('Testimonial not found');
 
