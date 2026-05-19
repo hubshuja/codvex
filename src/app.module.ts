@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { ServeStaticModule } from '@nestjs/serve-static';
-import { join } from 'path';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MailerModule } from '@nestjs-modules/mailer';
@@ -11,7 +9,6 @@ import { SkillsModule } from './skills/skills.module';
 import { TestimonialsModule } from './testimonials/testimonials.module';
 import { BlogModule } from './blog/blog.module';
 import { ContactModule } from './contact/contact.module';
-import { FallbackController } from './fallback.controller';
 import { User } from './users/user.entity';
 import { Project } from './projects/project.entity';
 import { Service } from './services/service.entity';
@@ -36,10 +33,6 @@ import { Contact } from './contact/contact.entity';
         entities: [User, Project, Service, Skill, Testimonial, Blog, Contact],
         synchronize: true,
       }),
-    }),
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'client/build'),
-      exclude: ['/api/(.*)'],
     }),
     MailerModule.forRootAsync({
       imports: [ConfigModule],
@@ -67,6 +60,5 @@ import { Contact } from './contact/contact.entity';
     BlogModule,
     ContactModule,
   ],
-  controllers: [FallbackController],
 })
 export class AppModule {}

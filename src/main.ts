@@ -13,7 +13,15 @@ async function bootstrap() {
 
   app.useStaticAssets(join(__dirname, '..', 'client'));
 
+  // ✅ SPA fallback as middleware — runs AFTER all controllers
+  app.use((req, res, next) => {
+    if (!req.url.startsWith('/api')) {
+      res.sendFile(join(__dirname, '..', 'client', 'index.html'));
+    } else {
+      next();
+    }
+  });
+
   await app.listen(process.env.PORT || 4000);
-  console.log(`🚀 Codvex running on: http://localhost:${process.env.PORT || 4000}`);
 }
 bootstrap();
