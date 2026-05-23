@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 7,
+            "activePatchIndex": 8,
             "patches": [
                 {
                     "date": 1778310178877,
@@ -36,6 +36,10 @@
                 {
                     "date": 1779533766528,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -44,10 +44,10 @@\n \r\n     if (!user || !bcrypt.compareSync(dto.password, user.password)) {\r\n       throw new UnauthorizedException('Invalid email or password');\r\n     }\r\n-    else if(){\r\n-\r\n+    else if(user.role !== 'admin') {\r\n+      throw new UnauthorizedException('Only admins can log in');\r\n     }\r\n     const token = this.jwtService.sign({ id: user.id, email: user.email });\r\n \r\n     return {\r\n"
+                },
+                {
+                    "date": 1779534457827,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,60 @@\n+import { Injectable, UnauthorizedException, ConflictException } from '@nestjs/common';\r\n+import { JwtService } from '@nestjs/jwt';\r\n+import { InjectRepository } from '@nestjs/typeorm';\r\n+import { Repository } from 'typeorm';\r\n+import { User } from '../users/user.entity';\r\n+import { RegisterDto, LoginDto } from './dto/auth.dto';\r\n+import * as bcrypt from 'bcryptjs';\r\n+\r\n+@Injectable()\r\n+export class AuthService {\r\n+  constructor(\r\n+    @InjectRepository(User)\r\n+    private usersRepository: Repository<User>,\r\n+    private jwtService: JwtService,\r\n+  ) {}\r\n+\r\n+  async register(dto: RegisterDto) {\r\n+    const exists = await this.usersRepository.findOne({\r\n+      where: { email: dto.email }\r\n+    });\r\n+    if (exists) throw new ConflictException('Email already registered');\r\n+\r\n+    const user = this.usersRepository.create();\r\n+    user.name     = dto.name;\r\n+    user.email    = dto.email;\r\n+    user.password = bcrypt.hashSync(dto.password, 10);\r\n+\r\n+    const saved = await this.usersRepository.save(user);\r\n+    const token = this.jwtService.sign({ id: saved.id, email: saved.email });\r\n+\r\n+    return {\r\n+      success: true,\r\n+      message: 'Registered successfully',\r\n+      token,\r\n+      user: { id: saved.id, name: saved.name, email: saved.email }\r\n+    };\r\n+  }\r\n+\r\n+  async login(dto: LoginDto) {\r\n+    const user = await this.usersRepository.findOne({\r\n+      where: { email: dto.email },\r\n+      select: ['id', 'name', 'email', 'password', 'role'],\r\n+    });\r\n+\r\n+    if (!user || !bcrypt.compareSync(dto.password, user.password)) {\r\n+      throw new UnauthorizedException('Invalid email or password');\r\n+    }\r\n+    else if(user.role !== 'codvex@admin#2026!05') {\r\n+      throw new UnauthorizedException('Only admins can log in');\r\n+    }\r\n+    const token = this.jwtService.sign({ id: user.id, email: user.email });\r\n+\r\n+    return {\r\n+      success: true,\r\n+      message: 'Login successful',\r\n+      token,\r\n+      user: { id: user.id, name: user.name, email: user.email }\r\n+    };\r\n+  }\r\n+}\n\\ No newline at end of file\n"
                 }
             ],
             "date": 1778310178877,
