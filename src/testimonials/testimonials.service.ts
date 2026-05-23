@@ -111,7 +111,7 @@ export class TestimonialsService {
     const testimonial = await this.testimonialsRepository.findOne({ where: { id } });
     if (!testimonial) throw new NotFoundException('Testimonial not found');
 
-    const baseUrl = `${process.env.APP_URL}`;
+    const baseUrl = `https://codvex.net`;
 
     console.log('Updating testimonial with ID:', baseUrl);
     Object.assign(testimonial, dto);
