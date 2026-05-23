@@ -81,7 +81,7 @@ export class TestimonialsService {
 ) {
   this.ensureUploadDirs();
 
-  const appUrl = process.env.APP_URL || 'https://codvex.net';
+  const appUrl = 'https://codvex.net';
 
   // ✅ Exclude file fields from dto
   const { client_avatar, screen_shot, ...rest } = dto as any;
@@ -121,7 +121,7 @@ export class TestimonialsService {
   // ✅ Exclude file fields from dto before assigning
   const { client_avatar, screen_shot, ...rest } = dto as any;
   Object.assign(testimonial, rest);
-  const appUrl = process.env.APP_URL || 'https://codvex.net';
+  const appUrl = 'https://codvex.net';
   if (avatarFilename) {
     if (testimonial.client_avatar) {
       const oldPath = path.join(__dirname, '..', '..', 'uploads', 'avatars', path.basename(testimonial.client_avatar));
