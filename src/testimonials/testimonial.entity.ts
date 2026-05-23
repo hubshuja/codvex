@@ -1,4 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';
+import { Platform } from '../enums/platform.enum';
 
 @Entity('testimonials')
 export class Testimonial {
@@ -9,7 +10,7 @@ export class Testimonial {
   client_name: string;
 
   @Column({ nullable: true })
-  client_title: string;   // e.g. "CEO at TechCorp"
+  client_title: string;
 
   @Column({ nullable: true })
   client_country: string;
@@ -20,17 +21,20 @@ export class Testimonial {
   @Column({ type: 'text' })
   message: string;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', nullable: true })
   job_title: string;
 
-   @Column({ type: 'text' })
+  @Column({ type: 'text', nullable: true })
   screen_shot: string;
 
   @Column({ default: 5 })
-  rating: number;         // 1-5
+  rating: number;
 
-  @Column({ default: true })
-  is_featured: boolean;
+  @Column({ type: 'enum', enum: Platform, nullable: true })
+  platform: Platform;
+
+  @Column({ type: 'tinyint', default: 0 })  // ✅ added @Column
+  is_featured: number;
 
   @CreateDateColumn()
   created_at: Date;

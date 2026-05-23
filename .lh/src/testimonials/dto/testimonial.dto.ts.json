@@ -3,11 +3,31 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 0,
+            "activePatchIndex": 5,
             "patches": [
                 {
                     "date": 1778310767952,
                     "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1779428496307,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,49 +1,19 @@\n-import { IsNotEmpty, IsOptional, IsNumber, IsBoolean, Min, Max } from 'class-validator';\r\n+import { IsOptional, IsEnum } from 'class-validator';\r\n+import { Platform } from '../../enums/platform.enum';\r\n \r\n export class CreateTestimonialDto {\r\n-  @IsNotEmpty({ message: 'Client name is required' })\r\n-  client_name: string;\r\n-\r\n-  @IsOptional()\r\n-  client_title?: string;\r\n-\r\n-  @IsOptional()\r\n+  client_name:     string;\r\n+  client_title?:   string;\r\n   client_country?: string;\r\n+  message:         string;\r\n+  job_title?:      string;\r\n+  rating?:         number;\r\n+  is_featured?:    boolean;\r\n \r\n-  @IsNotEmpty({ message: 'Message is required' })\r\n-  message: string;\r\n-\r\n   @IsOptional()\r\n-  @IsNumber()\r\n-  @Min(1)\r\n-  @Max(5)\r\n-  rating?: number;\r\n+  @IsEnum(Platform)\r\n+  platform: Platform;\r\n \r\n   @IsOptional()\r\n-  @IsBoolean()\r\n-  is_featured?: boolean;\r\n-}\r\n-\r\n-export class UpdateTestimonialDto {\r\n-  @IsOptional()\r\n-  client_name?: string;\r\n-\r\n-  @IsOptional()\r\n-  client_title?: string;\r\n-\r\n-  @IsOptional()\r\n-  client_country?: string;\r\n-\r\n-  @IsOptional()\r\n-  message?: string;\r\n-\r\n-  @IsOptional()\r\n-  @IsNumber()\r\n-  @Min(1)\r\n-  @Max(5)\r\n-  rating?: number;\r\n-\r\n-  @IsOptional()\r\n-  @IsBoolean()\r\n-  is_featured?: boolean;\r\n+  skill_ids?: number[];\r\n }\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1779428531826,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,19 @@\n+import { IsOptional, IsEnum } from 'class-validator';\r\n+import { Platform } from '../../enums/platform.enum';\r\n+\r\n+export class CreateTestimonialDto {\r\n+  client_name:     string;\r\n+  client_title?:   string;\r\n+  client_country?: string;\r\n+  message:         string;\r\n+  job_title?:      string;\r\n+  rating?:         number;\r\n+  is_featured?:    boolean;\r\n+\r\n+  @IsOptional()\r\n+  @IsEnum(Platform)\r\n+  platform?: Platform;\r\n+\r\n+  @IsOptional()\r\n+  skill_ids?: number[];\r\n+}\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1779428584073,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -12,8 +12,5 @@\n \r\n   @IsOptional()\r\n   @IsEnum(Platform)\r\n   platform?: Platform;\r\n-\r\n-  @IsOptional()\r\n-  skill_ids?: number[];\r\n }\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1779428719770,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -12,24 +12,32 @@\n \r\n   @IsOptional()\r\n   @IsEnum(Platform)\r\n   platform?: Platform;\r\n-}\n-import { IsOptional, IsEnum } from 'class-validator';\r\n-import { Platform } from '../../enums/platform.enum';\r\n+}\r\n \r\n-export class CreateTestimonialDto {\r\n-  client_name:     string;\r\n-  client_title?:   string;\r\n+export class UpdateTestimonialDto {\r\n+  @IsOptional()\r\n+  client_name?: string;\r\n+\r\n+  @IsOptional()\r\n+  client_title?: string;\r\n+\r\n+  @IsOptional()\r\n   client_country?: string;\r\n-  message:         string;\r\n-  job_title?:      string;\r\n-  rating?:         number;\r\n-  is_featured?:    boolean;\r\n \r\n   @IsOptional()\r\n-  @IsEnum(Platform)\r\n-  platform: Platform;\r\n+  message?: string;\r\n \r\n   @IsOptional()\r\n-  skill_ids?: number[];\r\n+  job_title?: string;\r\n+\r\n+  @IsOptional()\r\n+  rating?: number;\r\n+\r\n+  @IsOptional()\r\n+  is_featured?: boolean;\r\n+\r\n+  @IsOptional()\r\n+  @IsEnum(Platform)\r\n+  platform?: Platform;\r\n }\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1779430679145,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -7,9 +7,9 @@\n   client_country?: string;\r\n   message:         string;\r\n   job_title?:      string;\r\n   rating?:         number;\r\n-  is_featured?:    boolean;\r\n+  is_featured?:    number;\r\n \r\n   @IsOptional()\r\n   @IsEnum(Platform)\r\n   platform?: Platform;\r\n"
                 }
             ],
             "date": 1778310767952,

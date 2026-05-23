@@ -29,7 +29,7 @@ export class ContactService {
     // Send email notification to admin
     try {
       await this.mailerService.sendMail({
-        to: this.configService.get('ADMIN_EMAIL'),
+        to: 'shujauom@gmail.com',
         subject: `New Contact: ${contact.subject}`,
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -80,7 +80,6 @@ export class ContactService {
         `,
       });
     } catch (error) {
-      console.log('Email sending failed:', error.message);
       // Don't throw — message is saved to DB regardless
     }
 

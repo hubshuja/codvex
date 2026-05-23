@@ -3,11 +3,15 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 0,
+            "activePatchIndex": 1,
             "patches": [
                 {
                     "date": 1778311098583,
                     "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1779451238484,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,31 +1,33 @@\n import { NestFactory } from '@nestjs/core';\r\n import { AppModule } from './app.module';\r\n-import { ValidationPipe } from '@nestjs/common';\r\n+import { NestExpressApplication } from '@nestjs/platform-express';\r\n import { join } from 'path';\r\n-import { NestExpressApplication } from '@nestjs/platform-express';\r\n-import * as express from 'express';\r\n \r\n async function bootstrap() {\r\n   const app = await NestFactory.create<NestExpressApplication>(AppModule);\r\n \r\n-  // CORS\r\n   app.enableCors({\r\n-    origin: '*',\r\n-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',\r\n-    allowedHeaders: 'Content-Type, Authorization',\r\n+    origin: ['http://localhost:3000', 'http://localhost:3001', 'https://codvex.net'],\r\n+    credentials: true,\r\n   });\r\n \r\n-  // Global validation\r\n-  app.useGlobalPipes(new ValidationPipe({\r\n-    whitelist: true,\r\n-    transform: true,\r\n-    forbidNonWhitelisted: false,\r\n-  }));\r\n+  // ✅ FIX 1 — Serve uploads folder as static assets\r\n+  app.useStaticAssets(join(__dirname, '..', 'uploads'), {\r\n+    prefix: '/uploads',\r\n+  });\r\n \r\n-  // Serve uploaded files\r\n-  app.use('/uploads', express.static(join(__dirname, '..', 'uploads')));\r\n+  // ✅ Serve React client\r\n+  app.useStaticAssets(join(__dirname, '..', 'client'));\r\n \r\n-  await app.listen(process.env.PORT ?? 4000);\r\n-  console.log(`🚀 Codvex API running on: http://localhost:${process.env.PORT ?? 4000}`);\r\n+  // ✅ FIX 2 — Exclude /uploads from SPA fallback too\r\n+  app.use((req, res, next) => {\r\n+    if (!req.url.startsWith('/api') && !req.url.startsWith('/uploads')) {\r\n+      res.sendFile(join(__dirname, '..', 'client', 'index.html'));\r\n+    } else {\r\n+      next();\r\n+    }\r\n+  });\r\n+\r\n+  await app.listen(process.env.PORT || 4000);\r\n }\r\n bootstrap();\n\\ No newline at end of file\n"
                 }
             ],
             "date": 1778311098583,

@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 2,
+            "activePatchIndex": 4,
             "patches": [
                 {
                     "date": 1778310999182,
@@ -16,6 +16,14 @@
                 {
                     "date": 1778311299457,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -19,9 +19,9 @@\n     // Save to database\r\n     const contact   = this.contactRepository.create();\r\n     contact.name    = dto.name;\r\n     contact.email   = dto.email;\r\n-    contact.phone   = dto.phone || null;\r\n+    contact.phone   = dto.phone || '';\r\n     contact.subject = dto.subject || 'New Contact Message';\r\n     contact.message = dto.message;\r\n \r\n     await this.contactRepository.save(contact);\r\n"
+                },
+                {
+                    "date": 1779521095270,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -28,9 +28,9 @@\n \r\n     // Send email notification to admin\r\n     try {\r\n       await this.mailerService.sendMail({\r\n-        to: this.configService.get('ADMIN_EMAIL'),\r\n+        to: 'shujauom@gmail.com',\r\n         subject: `New Contact: ${contact.subject}`,\r\n         html: `\r\n           <div style=\"font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;\">\r\n             <h2 style=\"color: #2563eb;\">New Contact Message — Codvex</h2>\r\n"
+                },
+                {
+                    "date": 1779527868105,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -79,9 +79,8 @@\n           </div>\r\n         `,\r\n       });\r\n     } catch (error) {\r\n-      console.log('Email sending failed:', error.message);\r\n       // Don't throw — message is saved to DB regardless\r\n     }\r\n \r\n     return {\r\n"
                 }
             ],
             "date": 1778310999182,

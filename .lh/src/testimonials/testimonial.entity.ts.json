@@ -3,11 +3,43 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 0,
+            "activePatchIndex": 8,
             "patches": [
                 {
                     "date": 1778309954689,
                     "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1779428591635,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,6 @@\n import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';\r\n-\r\n+import { Platform } from '../enums/platform.enum';\r\n @Entity('testimonials')\r\n export class Testimonial {\r\n   @PrimaryGeneratedColumn()\r\n   id: number;\r\n@@ -19,11 +19,20 @@\n \r\n   @Column({ type: 'text' })\r\n   message: string;\r\n \r\n+  @Column({ type: 'text' })\r\n+  job_title: string;\r\n+\r\n+   @Column({ type: 'text' })\r\n+  screen_shot: string;\r\n+\r\n   @Column({ default: 5 })\r\n   rating: number;         // 1-5\r\n \r\n+  @Column({ type: 'enum', enum: Platform, nullable: true })\r\n+   platform: Platform;\r\n+\r\n   @Column({ default: true })\r\n   is_featured: boolean;\r\n \r\n   @CreateDateColumn()\r\n"
+                },
+                {
+                    "date": 1779430294427,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -32,9 +32,9 @@\n   @Column({ type: 'enum', enum: Platform, nullable: true })\r\n    platform: Platform;\r\n \r\n   @Column({ default: true })\r\n-  is_featured: boolean;\r\n+  is_featured: tinyInt;\r\n \r\n   @CreateDateColumn()\r\n   created_at: Date;\r\n }\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1779430312116,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,40 @@\n+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';\r\n+import { Platform } from '../enums/platform.enum';\r\n+@Entity('testimonials')\r\n+export class Testimonial {\r\n+  @PrimaryGeneratedColumn()\r\n+  id: number;\r\n+\r\n+  @Column()\r\n+  client_name: string;\r\n+\r\n+  @Column({ nullable: true })\r\n+  client_title: string;   // e.g. \"CEO at TechCorp\"\r\n+\r\n+  @Column({ nullable: true })\r\n+  client_country: string;\r\n+\r\n+  @Column({ nullable: true })\r\n+  client_avatar: string;\r\n+\r\n+  @Column({ type: 'text' })\r\n+  message: string;\r\n+\r\n+  @Column({ type: 'text' })\r\n+  job_title: string;\r\n+\r\n+   @Column({ type: 'text' })\r\n+  screen_shot: string;\r\n+\r\n+  @Column({ default: 5 })\r\n+  rating: number;         // 1-5\r\n+\r\n+  @Column({ type: 'enum', enum: Platform, nullable: true })\r\n+   platform: Platform;\r\n+\r\n+  @Column({ default: true })\r\n+  is_featured: number;\r\n+\r\n+  @CreateDateColumn()\r\n+  created_at: Date;\r\n+}\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1779430415618,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -31,50 +31,10 @@\n \r\n   @Column({ type: 'enum', enum: Platform, nullable: true })\r\n    platform: Platform;\r\n \r\n-  @Column({ default: true })\r\n+  @Column({ default: 1 })\r\n   is_featured: number;\r\n \r\n   @CreateDateColumn()\r\n   created_at: Date;\r\n-}\n-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';\r\n-import { Platform } from '../enums/platform.enum';\r\n-@Entity('testimonials')\r\n-export class Testimonial {\r\n-  @PrimaryGeneratedColumn()\r\n-  id: number;\r\n-\r\n-  @Column()\r\n-  client_name: string;\r\n-\r\n-  @Column({ nullable: true })\r\n-  client_title: string;   // e.g. \"CEO at TechCorp\"\r\n-\r\n-  @Column({ nullable: true })\r\n-  client_country: string;\r\n-\r\n-  @Column({ nullable: true })\r\n-  client_avatar: string;\r\n-\r\n-  @Column({ type: 'text' })\r\n-  message: string;\r\n-\r\n-  @Column({ type: 'text' })\r\n-  job_title: string;\r\n-\r\n-   @Column({ type: 'text' })\r\n-  screen_shot: string;\r\n-\r\n-  @Column({ default: 5 })\r\n-  rating: number;         // 1-5\r\n-\r\n-  @Column({ type: 'enum', enum: Platform, nullable: true })\r\n-   platform: Platform;\r\n-\r\n-  @Column({ default: true })\r\n-  is_featured: tinyInt;\r\n-\r\n-  @CreateDateColumn()\r\n-  created_at: Date;\r\n }\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1779430704537,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -31,10 +31,11 @@\n \r\n   @Column({ type: 'enum', enum: Platform, nullable: true })\r\n    platform: Platform;\r\n \r\n-  @Column({ default: 1 })\r\n-  is_featured: number;\r\n+   @IsOptional()\r\n+  @Transform(({ value }) => [true, 'true', '1', 1].includes(value) ? 1 : 0)\r\n+  is_featured?: number;\r\n \r\n   @CreateDateColumn()\r\n   created_at: Date;\r\n }\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1779430711376,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,7 @@\n import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';\r\n import { Platform } from '../enums/platform.enum';\r\n+import { Transform } from 'stream';\r\n @Entity('testimonials')\r\n export class Testimonial {\r\n   @PrimaryGeneratedColumn()\r\n   id: number;\r\n"
+                },
+                {
+                    "date": 1779430717453,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,8 @@\n import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';\r\n import { Platform } from '../enums/platform.enum';\r\n import { Transform } from 'stream';\r\n+import { IsOptional } from 'class-validator';\r\n @Entity('testimonials')\r\n export class Testimonial {\r\n   @PrimaryGeneratedColumn()\r\n   id: number;\r\n"
+                },
+                {
+                    "date": 1779430847143,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,41 @@\n+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';\r\n+import { Platform } from '../enums/platform.enum';\r\n+\r\n+@Entity('testimonials')\r\n+export class Testimonial {\r\n+  @PrimaryGeneratedColumn()\r\n+  id: number;\r\n+\r\n+  @Column()\r\n+  client_name: string;\r\n+\r\n+  @Column({ nullable: true })\r\n+  client_title: string;\r\n+\r\n+  @Column({ nullable: true })\r\n+  client_country: string;\r\n+\r\n+  @Column({ nullable: true })\r\n+  client_avatar: string;\r\n+\r\n+  @Column({ type: 'text' })\r\n+  message: string;\r\n+\r\n+  @Column({ type: 'text', nullable: true })\r\n+  job_title: string;\r\n+\r\n+  @Column({ type: 'text', nullable: true })\r\n+  screen_shot: string;\r\n+\r\n+  @Column({ default: 5 })\r\n+  rating: number;\r\n+\r\n+  @Column({ type: 'enum', enum: Platform, nullable: true })\r\n+  platform: Platform;\r\n+\r\n+  @Column({ type: 'tinyint', default: 0 })  // ✅ added @Column\r\n+  is_featured: number;\r\n+\r\n+  @CreateDateColumn()\r\n+  created_at: Date;\r\n+}\n\\ No newline at end of file\n"
                 }
             ],
             "date": 1778309954689,

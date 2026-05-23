@@ -7,7 +7,6 @@ import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { v4 as uuidv4 } from 'uuid';
-import * as express from 'express';
 import { TestimonialsService } from './testimonials.service';
 import { CreateTestimonialDto, UpdateTestimonialDto } from './dto/testimonial.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
@@ -39,8 +38,11 @@ export class TestimonialsController {
 
   // ✅ Public routes
   @Get('featured')
-  findFeatured() {
-    return this.testimonialsService.findFeatured();
+  findFeatured(
+    @Query('page')    page    = '1',
+    @Query('perPage') perPage = '6',
+  ) {
+    return this.testimonialsService.findFeatured(+page, +perPage);
   }
 
   @Get()
@@ -56,7 +58,6 @@ export class TestimonialsController {
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(fileInterceptor)
   create(
-    @Req() req: express.Request,
     @Body() dto: CreateTestimonialDto,
     @UploadedFiles() files: {
       client_avatar?: Express.Multer.File[];
@@ -65,7 +66,7 @@ export class TestimonialsController {
   ) {
     const avatar     = files?.client_avatar?.[0]?.filename;
     const screenshot = files?.screen_shot?.[0]?.filename;
-    return this.testimonialsService.create(dto, req, avatar, screenshot);
+    return this.testimonialsService.create(dto, avatar, screenshot);
   }
 
   @Put(':id')
@@ -73,7 +74,6 @@ export class TestimonialsController {
   @UseInterceptors(fileInterceptor)
   update(
     @Param('id', ParseIntPipe) id: number,
-    @Req() req: express.Request,
     @Body() dto: UpdateTestimonialDto,
     @UploadedFiles() files: {
       client_avatar?: Express.Multer.File[];
@@ -82,7 +82,7 @@ export class TestimonialsController {
   ) {
     const avatar     = files?.client_avatar?.[0]?.filename;
     const screenshot = files?.screen_shot?.[0]?.filename;
-    return this.testimonialsService.update(id, dto, req, avatar, screenshot);
+    return this.testimonialsService.update(id, dto,  avatar, screenshot);
   }
 
   @Delete(':id')

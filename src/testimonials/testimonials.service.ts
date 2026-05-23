@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { Testimonial } from './testimonial.entity';
 import { CreateTestimonialDto, UpdateTestimonialDto } from './dto/testimonial.dto';
 import { existsSync, unlinkSync, mkdirSync } from 'fs';
+import { Platform } from 'src/enums/platform.enum';
 import * as path from 'path';
 import * as express from 'express';
 
@@ -28,12 +29,26 @@ export class TestimonialsService {
   }
 
   // ✅ Public — get featured testimonials
-  async findFeatured() {
-    const data = await this.testimonialsRepository.find({
-      where: { is_featured: true },
+  async findFeatured(page = 1, perPage = 6) {
+    const skip = (page - 1) * perPage;
+    const [data, total] = await this.testimonialsRepository.findAndCount({
+      where: { is_featured: 1 },
       order: { created_at: 'DESC' },
+      skip,
+      take: perPage,
     });
-    return { success: true, data };
+    return {
+      success: true,
+      data,
+      pagination: {
+        total,
+        perPage,
+        currentPage: page,
+        totalPages: Math.ceil(total / perPage),
+        hasNext:     page < Math.ceil(total / perPage),
+        hasPrev:     page > 1,
+      },
+    };
   }
 
   // ✅ Public — get all testimonials
@@ -61,21 +76,20 @@ export class TestimonialsService {
   // 🔒 Admin — create
   async create(
     dto: CreateTestimonialDto,
-    req: express.Request,
     avatarFilename?: string,
     screenshotFilename?: string,
   ) {
     this.ensureUploadDirs();
-    const baseUrl = this.getBaseUrl(req);
-
+     const baseUrl = `${process.env.APP_URL}`;
     const testimonial          = this.testimonialsRepository.create();
     testimonial.client_name    = dto.client_name;
     testimonial.client_title   = dto.client_title   || '';
     testimonial.client_country = dto.client_country || '';
     testimonial.message        = dto.message;
     testimonial.rating         = dto.rating         || 5;
-    testimonial.job_title      = dto.job_title;
-    testimonial.is_featured    = dto.is_featured    ?? false;
+    testimonial.platform  = dto.platform  ?? Platform.UPWORK; // or whatever your default is
+     testimonial.job_title = dto.job_title || '';
+    testimonial.is_featured    = dto.is_featured?1: 0;
     testimonial.client_avatar  = avatarFilename
       ? `${baseUrl}/uploads/avatars/${avatarFilename}`
       : '';
@@ -91,14 +105,13 @@ export class TestimonialsService {
   async update(
     id: number,
     dto: UpdateTestimonialDto,
-    req: express.Request,
     avatarFilename?: string,
     screenshotFilename?: string,
   ) {
     const testimonial = await this.testimonialsRepository.findOne({ where: { id } });
     if (!testimonial) throw new NotFoundException('Testimonial not found');
 
-    const baseUrl = this.getBaseUrl(req);
+    const baseUrl = `${process.env.APP_URL}`;
 
     Object.assign(testimonial, dto);
 

@@ -11,11 +11,17 @@ async function bootstrap() {
     credentials: true,
   });
 
+  // ✅ FIX 1 — Serve uploads folder as static assets
+  app.useStaticAssets(join(__dirname, '..', 'uploads'), {
+    prefix: '/uploads',
+  });
+
+  // ✅ Serve React client
   app.useStaticAssets(join(__dirname, '..', 'client'));
 
-  // ✅ SPA fallback as middleware — runs AFTER all controllers
+  // ✅ FIX 2 — Exclude /uploads from SPA fallback too
   app.use((req, res, next) => {
-    if (!req.url.startsWith('/api')) {
+    if (!req.url.startsWith('/api') && !req.url.startsWith('/uploads')) {
       res.sendFile(join(__dirname, '..', 'client', 'index.html'));
     } else {
       next();
