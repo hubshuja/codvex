@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 4,
+            "activePatchIndex": 7,
             "patches": [
                 {
                     "date": 1778310178877,
@@ -24,6 +24,18 @@
                 {
                     "date": 1778324036087,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -37,8 +37,9 @@\n   }\r\n \r\n   async login(dto: LoginDto) {\r\n     console.log('dto.email', dto.email)\r\n+      console.log('dto.email', dto.password)\r\n     const user = await this.usersRepository.findOne({\r\n       where: { email: dto.email },\r\n       select: ['id', 'name', 'email', 'password'],\r\n     });\r\n"
+                },
+                {
+                    "date": 1779533741687,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -36,20 +36,19 @@\n     };\r\n   }\r\n \r\n   async login(dto: LoginDto) {\r\n-    console.log('dto.email', dto.email)\r\n-      console.log('dto.email', dto.password)\r\n     const user = await this.usersRepository.findOne({\r\n       where: { email: dto.email },\r\n       select: ['id', 'name', 'email', 'password'],\r\n     });\r\n \r\n-    console.log(user)\r\n     if (!user || !bcrypt.compareSync(dto.password, user.password)) {\r\n       throw new UnauthorizedException('Invalid email or password');\r\n     }\r\n+    else if(){\r\n \r\n+    }\r\n     const token = this.jwtService.sign({ id: user.id, email: user.email });\r\n \r\n     return {\r\n       success: true,\r\n"
+                },
+                {
+                    "date": 1779533754109,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -38,9 +38,9 @@\n \r\n   async login(dto: LoginDto) {\r\n     const user = await this.usersRepository.findOne({\r\n       where: { email: dto.email },\r\n-      select: ['id', 'name', 'email', 'password'],\r\n+      select: ['id', 'name', 'email', 'password', 'role'],\r\n     });\r\n \r\n     if (!user || !bcrypt.compareSync(dto.password, user.password)) {\r\n       throw new UnauthorizedException('Invalid email or password');\r\n"
+                },
+                {
+                    "date": 1779533766528,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -44,10 +44,10 @@\n \r\n     if (!user || !bcrypt.compareSync(dto.password, user.password)) {\r\n       throw new UnauthorizedException('Invalid email or password');\r\n     }\r\n-    else if(){\r\n-\r\n+    else if(user.role !== 'admin') {\r\n+      throw new UnauthorizedException('Only admins can log in');\r\n     }\r\n     const token = this.jwtService.sign({ id: user.id, email: user.email });\r\n \r\n     return {\r\n"
                 }
             ],
             "date": 1778310178877,

@@ -37,18 +37,17 @@ export class AuthService {
   }
 
   async login(dto: LoginDto) {
-    console.log('dto.email', dto.email)
-      console.log('dto.password', dto.password)
     const user = await this.usersRepository.findOne({
       where: { email: dto.email },
-      select: ['id', 'name', 'email', 'password'],
+      select: ['id', 'name', 'email', 'password', 'role'],
     });
 
-    console.log(user)
     if (!user || !bcrypt.compareSync(dto.password, user.password)) {
       throw new UnauthorizedException('Invalid email or password');
     }
-
+    else if(user.role !== 'admin') {
+      throw new UnauthorizedException('Only admins can log in');
+    }
     const token = this.jwtService.sign({ id: user.id, email: user.email });
 
     return {
