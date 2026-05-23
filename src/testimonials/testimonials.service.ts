@@ -80,7 +80,7 @@ export class TestimonialsService {
     screenshotFilename?: string,
   ) {
     this.ensureUploadDirs();
-     const baseUrl = `${process.env.APP_URL}`;
+     const baseUrl = `https://codvex.net`;
     const testimonial          = this.testimonialsRepository.create();
     testimonial.client_name    = dto.client_name;
     testimonial.client_title   = dto.client_title   || '';
@@ -91,10 +91,10 @@ export class TestimonialsService {
      testimonial.job_title = dto.job_title || '';
     testimonial.is_featured    = dto.is_featured?1: 0;
     testimonial.client_avatar  = avatarFilename
-      ? `${baseUrl}/uploads/avatars/${avatarFilename}`
+      ? `https://codvex.net/uploads/avatars/${avatarFilename}`
       : '';
     testimonial.screen_shot    = screenshotFilename
-      ? `${baseUrl}/uploads/screenshots/${screenshotFilename}`
+      ? `https://codvex.net/uploads/screenshots/${screenshotFilename}`
       : '';
 
     const saved = await this.testimonialsRepository.save(testimonial);
@@ -122,7 +122,7 @@ export class TestimonialsService {
         const oldPath = path.join(__dirname, '..', '..', 'uploads', 'avatars', path.basename(testimonial.client_avatar));
         if (existsSync(oldPath)) unlinkSync(oldPath);
       }
-      testimonial.client_avatar = `${baseUrl}/uploads/avatars/${avatarFilename}`;
+      testimonial.client_avatar = `https://codvex.net/uploads/avatars/${avatarFilename}`;
     }
 
     if (screenshotFilename) {
@@ -131,7 +131,7 @@ export class TestimonialsService {
         const oldPath = path.join(__dirname, '..', '..', 'uploads', 'screenshots', path.basename(testimonial.screen_shot));
         if (existsSync(oldPath)) unlinkSync(oldPath);
       }
-      testimonial.screen_shot = `${baseUrl}/uploads/screenshots/${screenshotFilename}`;
+      testimonial.screen_shot = `https://codvex.net/uploads/screenshots/${screenshotFilename}`;
     }
 
     const saved = await this.testimonialsRepository.save(testimonial);
