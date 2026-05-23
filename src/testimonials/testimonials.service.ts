@@ -113,6 +113,7 @@ export class TestimonialsService {
 
     const baseUrl = `${process.env.APP_URL}`;
 
+    console.log('Updating testimonial with ID:', baseUrl);
     Object.assign(testimonial, dto);
 
     if (avatarFilename) {
