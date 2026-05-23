@@ -75,68 +75,72 @@ export class TestimonialsService {
 
   // 🔒 Admin — create
   async create(
-    dto: CreateTestimonialDto,
-    avatarFilename?: string,
-    screenshotFilename?: string,
-  ) {
-    this.ensureUploadDirs();
-     const baseUrl = `https://codvex.net`;
-    const testimonial          = this.testimonialsRepository.create();
-    testimonial.client_name    = dto.client_name;
-    testimonial.client_title   = dto.client_title   || '';
-    testimonial.client_country = dto.client_country || '';
-    testimonial.message        = dto.message;
-    testimonial.rating         = dto.rating         || 5;
-    testimonial.platform  = dto.platform  ?? Platform.UPWORK; // or whatever your default is
-     testimonial.job_title = dto.job_title || '';
-    testimonial.is_featured    = dto.is_featured?1: 0;
-    testimonial.client_avatar  = avatarFilename
-      ? `https://codvex.net/uploads/avatars/${avatarFilename}`
-      : '';
-    testimonial.screen_shot    = screenshotFilename
-      ? `https://codvex.net/uploads/screenshots/${screenshotFilename}`
-      : '';
+  dto: CreateTestimonialDto,
+  avatarFilename?: string,
+  screenshotFilename?: string,
+) {
+  this.ensureUploadDirs();
 
-    const saved = await this.testimonialsRepository.save(testimonial);
-    return { success: true, message: 'Testimonial created successfully', data: saved };
-  }
+  const appUrl = process.env.APP_URL || 'https://codvex.net';
 
+  // ✅ Exclude file fields from dto
+  const { client_avatar, screen_shot, ...rest } = dto as any;
+
+  const testimonial = this.testimonialsRepository.create();
+  Object.assign(testimonial, rest);
+
+  // override specific fields with fallbacks
+  testimonial.client_title   = dto.client_title   || '';
+  testimonial.client_country = dto.client_country || '';
+  testimonial.rating         = dto.rating         || 5;
+  testimonial.job_title      = dto.job_title      || '';
+  testimonial.platform       = dto.platform       ?? Platform.UPWORK;
+  testimonial.is_featured    = dto.is_featured    ? 1 : 0;
+
+  // ✅ Only set if file uploaded, otherwise keep empty
+  testimonial.client_avatar = avatarFilename
+    ? `${appUrl}/uploads/avatars/${avatarFilename}`
+    : '';
+  testimonial.screen_shot = screenshotFilename
+    ? `${appUrl}/uploads/screenshots/${screenshotFilename}`
+    : '';
+
+  const saved = await this.testimonialsRepository.save(testimonial);
+  return { success: true, message: 'Testimonial created successfully', data: saved };
+}
   // 🔒 Admin — update
-  async update(
-    id: number,
-    dto: UpdateTestimonialDto,
-    avatarFilename?: string,
-    screenshotFilename?: string,
-  ) {
-    const testimonial = await this.testimonialsRepository.findOne({ where: { id } });
-    if (!testimonial) throw new NotFoundException('Testimonial not found');
-
-    const baseUrl = `https://codvex.net`;
-
-    console.log('Updating testimonial with ID:', baseUrl);
-    Object.assign(testimonial, dto);
-
-    if (avatarFilename) {
-      // delete old file if exists
-      if (testimonial.client_avatar) {
-        const oldPath = path.join(__dirname, '..', '..', 'uploads', 'avatars', path.basename(testimonial.client_avatar));
-        if (existsSync(oldPath)) unlinkSync(oldPath);
-      }
-      testimonial.client_avatar = `https://codvex.net/uploads/avatars/${avatarFilename}`;
+ async update(
+  id: number,
+  dto: UpdateTestimonialDto,
+  avatarFilename?: string,
+  screenshotFilename?: string,
+) {
+  const testimonial = await this.testimonialsRepository.findOne({ where: { id } });
+  if (!testimonial) throw new NotFoundException('Testimonial not found');
+   
+  // ✅ Exclude file fields from dto before assigning
+  const { client_avatar, screen_shot, ...rest } = dto as any;
+  Object.assign(testimonial, rest);
+  const appUrl = process.env.APP_URL || 'https://codvex.net';
+  if (avatarFilename) {
+    if (testimonial.client_avatar) {
+      const oldPath = path.join(__dirname, '..', '..', 'uploads', 'avatars', path.basename(testimonial.client_avatar));
+      if (existsSync(oldPath)) unlinkSync(oldPath);
     }
-
-    if (screenshotFilename) {
-      // delete old file if exists
-      if (testimonial.screen_shot) {
-        const oldPath = path.join(__dirname, '..', '..', 'uploads', 'screenshots', path.basename(testimonial.screen_shot));
-        if (existsSync(oldPath)) unlinkSync(oldPath);
-      }
-      testimonial.screen_shot = `https://codvex.net/uploads/screenshots/${screenshotFilename}`;
-    }
-
-    const saved = await this.testimonialsRepository.save(testimonial);
-    return { success: true, message: 'Testimonial updated successfully', data: saved };
+    testimonial.client_avatar = `${appUrl}/uploads/avatars/${avatarFilename}`;
   }
+
+  if (screenshotFilename) {
+    if (testimonial.screen_shot) {
+      const oldPath = path.join(__dirname, '..', '..', 'uploads', 'screenshots', path.basename(testimonial.screen_shot));
+      if (existsSync(oldPath)) unlinkSync(oldPath);
+    }
+    testimonial.screen_shot = `${appUrl}/uploads/screenshots/${screenshotFilename}`;
+  }
+
+  const saved = await this.testimonialsRepository.save(testimonial);
+  return { success: true, message: 'Testimonial updated successfully', data: saved };
+}
 
   // 🔒 Admin — delete
   async remove(id: number) {
